@@ -1,5 +1,5 @@
 import React from 'react';
-import StackNavigator from './app/navigation/StackNavigator';
+import StackNavigator from '../navigation/StackNavigator';
 
 export default function App() {
   return <StackNavigator />;
