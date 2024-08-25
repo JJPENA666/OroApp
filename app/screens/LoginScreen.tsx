@@ -38,7 +38,7 @@ const LoginScreen = () => {
             value={password}
             onChangeText={setPassword}
         />
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
           <Text style={styles.buttonText}>Iniciar Sesión</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Register')} style={styles.signUpButton}>
