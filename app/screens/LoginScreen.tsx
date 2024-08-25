@@ -1,38 +1,52 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import {login} from "../services/AuthService";
 
-
-export default function LoginScreen() {
+const LoginScreen = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Inicia sesión en tu cuenta</Text>
-      
-      <TextInput 
-        style={styles.input} 
-        placeholder="Correo" 
-        keyboardType="email-address"
-      />
-      
-      <TextInput 
-        style={styles.input} 
-        placeholder="Contraseña" 
-        secureTextEntry 
-      />
-      
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
-        <Text style={styles.buttonText}>Iniciar Sesión</Text>
-      </TouchableOpacity>
+  const handleLogin = async () => {
+    try {
+      console.log('Iniciando sesión con:', email, password); // Para depuración
+      const response = await login(email, password); // Asegúrate de que `login` devuelve el formato esperado
+      console.log('Respuesta del login:', response); // Para depuración
+      Alert.alert('Login exitoso', `Bienvenido ${response.user.name}`);
+      navigation.navigate('Home'); // Redirige a HomeScreen después del login exitoso
+    } catch (error) {
+      console.error('Error en login:', error); // Para depuración
+      Alert.alert('Error', error.message || 'Algo salió mal');
+    }
+  };
 
-      <TouchableOpacity onPress={() => navigation.navigate('Register')} style={styles.signUpButton}>
-        <Text style={styles.signUpText}>¿Nuevo usuario? Regístrate</Text>
-        
-      </TouchableOpacity>
-    </View>
+  return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Inicia sesión en tu cuenta</Text>
+        <TextInput
+            style={styles.input}
+            placeholder="Correo"
+            keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail}
+        />
+        <TextInput
+            style={styles.input}
+            placeholder="Contraseña"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+        />
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Iniciar Sesión</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Register')} style={styles.signUpButton}>
+          <Text style={styles.signUpText}>¿Nuevo usuario? Regístrate</Text>
+        </TouchableOpacity>
+      </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -75,3 +89,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+export default LoginScreen;

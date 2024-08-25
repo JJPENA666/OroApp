@@ -1,39 +1,86 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import {register} from '../services/AuthService'; // Ajusta la ruta si es necesario
 
 export default function RegisterScreen() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
+  const [photoProfile, setPhotoProfile] = useState(null);
   const navigation = useNavigation();
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Regístrate para una nueva cuenta</Text>
-      
-      <TextInput 
-        style={styles.input} 
-        placeholder="Nombre Completo" 
-      />
-      
-      <TextInput 
-        style={styles.input} 
-        placeholder="Correo" 
-        keyboardType="email-address"
-      />
-      
-      <TextInput 
-        style={styles.input} 
-        placeholder="Contraseña" 
-        secureTextEntry 
-      />
-      
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Registrarse</Text>
-      </TouchableOpacity>
+  const handleRegister = async () => {
+    try {
+      const response = await register(
+        name,
+        email,
+        password,
+        address,
+        phone,
+      );
 
-      <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.signInButton}>
-        <Text style={styles.signInText}>¿Ya tienes una cuenta? Inicia sesión</Text>
-      </TouchableOpacity>
-    </View>
+      Alert.alert('Registro exitoso', response.message);
+      navigation.navigate('Login');
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    }
+  };
+
+  return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Regístrate para una nueva cuenta</Text>
+
+        <TextInput
+            style={styles.input}
+            placeholder="Nombre Completo"
+            value={name}
+            onChangeText={setName}
+        />
+
+        <TextInput
+            style={styles.input}
+            placeholder="Correo"
+            keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail}
+        />
+
+        <TextInput
+            style={styles.input}
+            placeholder="Contraseña"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+        />
+
+        <TextInput
+            style={styles.input}
+            placeholder="Dirección"
+            value={address}
+            onChangeText={setAddress}
+        />
+
+        <TextInput
+            style={styles.input}
+            placeholder="Teléfono"
+            value={phone}
+            onChangeText={setPhone}
+        />
+
+        {/* Aquí puedes agregar un componente para seleccionar la foto del perfil */}
+        {/* Ejemplo: <ImagePicker setPhotoProfile={setPhotoProfile} /> */}
+
+        <TouchableOpacity style={styles.button} onPress={handleRegister}>
+          <Text style={styles.buttonText}>Registrarse</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.signInButton}>
+          <Text style={styles.signInText}>¿Ya tienes una cuenta? Inicia sesión</Text>
+        </TouchableOpacity>
+      </View>
   );
 }
 
