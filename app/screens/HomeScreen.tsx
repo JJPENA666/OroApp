@@ -7,8 +7,10 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  FlatList,
+  FlatList, Button,
 } from "react-native";
+import WhatsAppButton from "../components/WhatsappButton";
+import { SafeAreaView } from 'react-native';
 
 const products = [
   {
@@ -72,6 +74,10 @@ export default function HomeScreen() {
         />
       </View>
       <Text style={styles.goldTitle}>Descubre la Elegancia del Oro</Text>
+
+      <SafeAreaView>
+        <WhatsAppButton />
+      </SafeAreaView>
 
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
@@ -144,6 +150,17 @@ export default function HomeScreen() {
           <MaterialCommunityIcons name="cart" size={24} color="#000" />
           <Text style={styles.footerButtonText}>Carrito</Text>
         </TouchableOpacity>
+
+
+        <TouchableOpacity
+          style={styles.footerButton}
+          onPress={() => navigation.navigate("Product")}
+        >
+          <MaterialCommunityIcons name="Productos" size={24} color="#000" />
+          <Text style={styles.footerButtonText}>Carrito</Text>
+        </TouchableOpacity>
+
+
       </View>
     </View>
   );
@@ -247,5 +264,11 @@ const styles = StyleSheet.create({
   footerButtonText: {
     fontSize: 12,
     marginTop: 5,
+  },
+
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
   },
 });

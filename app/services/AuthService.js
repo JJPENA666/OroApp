@@ -15,9 +15,7 @@ export const login = async (email, password) => {
     }
 };
 
-export const
-
-    register = async (name, email, password, address, phone) => {
+export const register = async (name, email, password, address, phone) => {
     const formData = new FormData();
     formData.append('name', name);
     formData.append('email', email);

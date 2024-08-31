@@ -10,11 +10,14 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     try {
-      console.log('Iniciando sesión con:', email, password); // Para depuración
       const response = await login(email, password); // Asegúrate de que `login` devuelve el formato esperado
-      console.log('Respuesta del login:', response); // Para depuración
-      Alert.alert('Login exitoso', `Bienvenido ${response.user.name}`);
-      navigation.navigate('Home'); // Redirige a HomeScreen después del login exitoso
+      console.log(response.user)
+   //   Alert.alert('Login exitoso', `Bienvenido ${response.user.name}`);
+      if (response){
+        navigation.navigate('Home'); // Redirige a HomeScreen después del login exitoso
+      }
+      console.log('pppppppppppppp')
+
     } catch (error) {
       console.error('Error en login:', error); // Para depuración
       Alert.alert('Error', error.message || 'Algo salió mal');
@@ -38,7 +41,7 @@ const LoginScreen = () => {
             value={password}
             onChangeText={setPassword}
         />
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Iniciar Sesión</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Register')} style={styles.signUpButton}>
