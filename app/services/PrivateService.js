@@ -27,7 +27,7 @@ export const getUsers = async () => {
     }
 };
 
-export const createProduct = (data, token) => {
+export const createProduct = data => {
     return axios.post(`${API_URL}/private//products`, data, {
         headers: {
             'Content-Type': 'multipart/form-data', // Asegúrate de especificar el tipo de contenido si estás enviando FormData
@@ -39,4 +39,12 @@ export const createProduct = (data, token) => {
             throw error;
         });
 };
+
+export const getCategories =()=>{
+    const request = axios(`${URL_CATALOGUES}category-catalogues`,{
+        headers:{
+        }
+    })
+    return request.then(response=>response.data)
+}
 

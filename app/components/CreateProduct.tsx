@@ -1,55 +1,146 @@
-import React, { useState } from 'react';
-import {createProduct} from "../services/PrivateService";
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, Text, Button, StyleSheet, ScrollView, Alert } from 'react-native';
+import { getCategories } from '../services/PrivateService';
+import {Picker} from "@react-native-picker/picker";
 
-const CreateProductComponent = () => {
+const CreateProductComponent = ({ onSubmit }) => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
-    const [category, setCategory] = useState('');
     const [stock, setStock] = useState('');
     const [discount, setDiscount] = useState('');
     const [description, setDescription] = useState('');
     const [state, setState] = useState('');
-    const [image, setImage] = useState(null);
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(''); // Inicializa con una cadena vacía
 
-    const handleSubmit = async () => {
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('price', price);
-        formData.append('category', category);
-        formData.append('stock', stock);
-        formData.append('discount', discount);
-        formData.append('description', description);
-        formData.append('state', state);
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const categoryData = await getCategories();
 
-        if (image) {
-            formData.append('image', image);
+                // Verificar si `categoryData` es un array
+                if (Array.isArray(categoryData)) {
+                    setCategories(categoryData);
+                } else {
+                    console.error('Expected an array of categories, but got:', categoryData);
+                }
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+    const handleSubmit = () => {
+        if (!selectedCategory) {
+            Alert.alert('Validation Error', 'Please select a category.');
+            return;
         }
 
-        const token = localStorage.getItem('token'); // Obtén el token de donde lo estés almacenando
-
-        try {
-            const response = await createProduct(formData, token);
-            console.log('Producto creado con éxito:', response);
-            // Manejar la respuesta aquí
-        } catch (error) {
-            console.error('Error al crear el producto:', error);
-            // Manejar el error aquí
-        }
+        const productData = {
+            name,
+            price,
+            stock,
+            discount,
+            description,
+            state,
+            category: selectedCategory,
+        };
+        onSubmit(productData);
     };
 
     return (
-        <div>
-            <input placeholder="Nombre" value={name} onChange={(e) => setName(e.target.value)} />
-            <input placeholder="Precio" value={price} onChange={(e) => setPrice(e.target.value)} />
-            <input placeholder="Categoría" value={category} onChange={(e) => setCategory(e.target.value)} />
-            <input placeholder="Stock" value={stock} onChange={(e) => setStock(e.target.value)} />
-            <input placeholder="Descuento" value={discount} onChange={(e) => setDiscount(e.target.value)} />
-            <input placeholder="Descripción" value={description} onChange={(e) => setDescription(e.target.value)} />
-            <input placeholder="Estado" value={state} onChange={(e) => setState(e.target.value)} />
-            <input type="file" onChange={(e) => setImage(e.target.files[0])} />
-            <button onClick={handleSubmit}>Crear Producto</button>
-        </div>
+        <ScrollView contentContainerStyle={styles.container}>
+            <Text style={styles.label}>Product Name:</Text>
+            <TextInput
+                style={styles.input}
+                value={name}
+                onChangeText={setName}
+                placeholder="Enter product name"
+            />
+
+            <Text style={styles.label}>Price:</Text>
+            <TextInput
+                style={styles.input}
+                value={price}
+                onChangeText={setPrice}
+                placeholder="Enter product price"
+                keyboardType="numeric"
+            />
+
+            <Text style={styles.label}>Stock:</Text>
+            <TextInput
+                style={styles.input}
+                value={stock}
+                onChangeText={setStock}
+                placeholder="Enter stock quantity"
+                keyboardType="numeric"
+            />
+
+            <Text style={styles.label}>Discount:</Text>
+            <TextInput
+                style={styles.input}
+                value={discount}
+                onChangeText={setDiscount}
+                placeholder="Enter discount percentage"
+                keyboardType="numeric"
+            />
+
+            <Text style={styles.label}>Description:</Text>
+            <TextInput
+                style={styles.input}
+                value={description}
+                onChangeText={setDescription}
+                placeholder="Enter product description"
+                multiline
+            />
+
+            <Text style={styles.label}>State:</Text>
+            <TextInput
+                style={styles.input}
+                value={state}
+                onChangeText={setState}
+                placeholder="Enter product state"
+            />
+
+            <Text style={styles.label}>Category:</Text>
+            <Picker
+                selectedValue={selectedCategory}
+                onValueChange={(itemValue) => setSelectedCategory(itemValue)}
+                style={styles.picker}
+            >
+                <Picker.Item label="Select a category" value={null} />
+                {categories.map((category) => (
+                    <Picker.Item label={category.name} value={category.id} key={category.id} />
+                ))}
+            </Picker>
+
+            <Button title="Submit" onPress={handleSubmit} />
+        </ScrollView>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        padding: 20,
+    },
+    label: {
+        fontSize: 16,
+        marginBottom: 5,
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        padding: 10,
+        borderRadius: 5,
+        marginBottom: 15,
+    },
+    picker: {
+        height: 50,
+        width: '100%',
+        marginBottom: 15,
+    },
+});
 
 export default CreateProductComponent;
