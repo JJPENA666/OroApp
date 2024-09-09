@@ -10,7 +10,6 @@ const URL_WISHES = 'http://192.168.0.110:8000/api/v1/private/favorites';
 export const getUser =()=>{
     const request = axios(`${URL_USERS}-profile`,{
         headers:{
-            Authorization: token
         }
     })
     return request.then(response=>response.data)
@@ -27,6 +26,37 @@ export const getUsers = async () => {
     }
 };
 
+
+
+export const getCategories =()=>{
+    const request = axios(`${URL_CATALOGUES}category-catalogues`,{
+        headers:{
+        }
+    })
+    return request.then(response=>response.data)
+}
+
+/*****************************************************************
+ ***************         SERVICE PRODUCTS           *******************
+ ******************************************************************/
+
+export const getProduct =(id)=>{
+    const request = axios(`${URL_PRODUCTS}/+${id}`,{
+        headers:{
+        }
+    })
+    return request.then(response=>response.data)
+}
+
+export const getProductAll = () => {
+    return axios.get(`${URL_PRODUCTS}`)
+        .then(response => response.data)  // Devuelve el objeto completo
+        .catch(error => {
+            console.error('Error fetching products:', error);
+            throw error;
+        });
+};
+
 export const createProduct = async (data) => {
     try {
         const response = await axios.post(`${URL_PRODUCTS}`, data, {
@@ -40,14 +70,20 @@ export const createProduct = async (data) => {
     }
 };
 
-
-
-
-export const getCategories =()=>{
-    const request = axios(`${URL_CATALOGUES}category-catalogues`,{
+export const updateProduct =(id, food)=>{
+    const request = axios.put(`${URL_PRODUCTS + id}/`,food,{
         headers:{
+            Authorization: token
         }
     })
     return request.then(response=>response.data)
 }
 
+export const destroyProduct =(id)=>{
+    const request =  axios.delete(`${URL_PRODUCTS}/`+ id,{
+        headers:{
+            Authorization: token
+        }
+    })
+    return request.then(response=>response.data)
+}
