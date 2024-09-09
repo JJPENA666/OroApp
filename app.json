@@ -1,6 +1,7 @@
 {
   "expo": {
-    "name": "MyNewProject",
+    "name": "Oro App",
+    "jsEngine": "hermes",
     "slug": "MyNewProject",
     "version": "1.0.0",
     "orientation": "portrait",

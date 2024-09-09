@@ -16,10 +16,10 @@ const CreateProductScreen = ({ navigation }) => {
 
         try {
             await createProduct(formData);
-            Alert.alert('Success', 'Product created successfully');
+            Alert.alert('Exito', 'El producto fue creado de manera correcta');
             navigation.goBack();
         } catch (error) {
-            Alert.alert('Error', 'Failed to create product');
+            Alert.alert('Error', 'Ocurrio un error al crear el producto');
         }
     };
 

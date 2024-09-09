@@ -154,10 +154,10 @@ export default function HomeScreen() {
 
         <TouchableOpacity
           style={styles.footerButton}
-          onPress={() => navigation.navigate("Product")}
+          onPress={() => navigation.navigate("Producto")}
         >
           <MaterialCommunityIcons name="Productos" size={24} color="#000" />
-          <Text style={styles.footerButtonText}>Carrito</Text>
+          <Text style={styles.footerButtonText}>Productos</Text>
         </TouchableOpacity>
 
 

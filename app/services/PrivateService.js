@@ -1,11 +1,11 @@
 import axios from "axios";
-const URL_PRODUCTS = 'http://127.0.0.1:8000/api/v1/private/products';
-const URL_CATALOGUES = 'http://127.0.0.1:8000/api/v1/private/';
-const URL_CARS = 'http://127.0.0.1:8000/api/v1/private/cars/';
-const URL_SALES = 'http://127.0.0.1:8000/api/v1/private/sales';
-const API_URL = 'http://127.0.0.1:8000/api/v1/private'; // Reemplaza con la URL de tu backend
-const URL_USERS = 'http://127.0.0.1:8000/api/v1/private/users';
-const URL_WISHES = 'http://127.0.0.1:8000/api/v1/private/favorites';
+const URL_PRODUCTS = 'http://192.168.0.110:8000/api/v1/private/products';
+const URL_CATALOGUES = 'http://192.168.0.110:8000/api/v1/private/';
+const URL_CARS = 'http://192.168.0.110:8000/api/v1/private/cars/';
+const URL_SALES = 'http://192.168.0.110:8000/api/v1/private/sales';
+const API_URL = 'http://192.168.0.110:8000/api/v1/private'; // Reemplaza con la URL de tu backend
+const URL_USERS = 'http://192.168.0.110:8000/api/v1/private/users';
+const URL_WISHES = 'http://192.168.0.110:8000/api/v1/private/favorites';
 
 export const getUser =()=>{
     const request = axios(`${URL_USERS}-profile`,{
@@ -27,18 +27,21 @@ export const getUsers = async () => {
     }
 };
 
-export const createProduct = data => {
-    return axios.post(`${API_URL}/private//products`, data, {
-        headers: {
-            'Content-Type': 'multipart/form-data', // Asegúrate de especificar el tipo de contenido si estás enviando FormData
-        },
-    })
-        .then(response => response.data)
-        .catch(error => {
-            console.error('Error al crear el producto:', error);
-            throw error;
+export const createProduct = async (data) => {
+    try {
+        const response = await axios.post(`${URL_PRODUCTS}`, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
         });
+        return response.data;
+    } catch (error) {
+        console.error('Error al crear el producto:', error);
+    }
 };
+
+
+
 
 export const getCategories =()=>{
     const request = axios(`${URL_CATALOGUES}category-catalogues`,{

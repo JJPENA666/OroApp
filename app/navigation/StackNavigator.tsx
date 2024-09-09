@@ -21,7 +21,7 @@ export default function StackNavigator() {
         <Stack.Screen name="Catalogo" component={CatalogoScreen} />
         <Stack.Screen name="Oferta" component={OfertaScreen} />
         <Stack.Screen name="Cart" component={CartScreen} />
-        <Stack.Screen name="Product" component={CreateProductScreen} />
+        <Stack.Screen name="Producto" component={CreateProductScreen} />
       </Stack.Navigator>
     </NavigationContainer>
 
