@@ -16,10 +16,10 @@ const ProductCard = ({ product }) => {
             />
             <View style={styles.details}>
                 <Text style={styles.name}>{product.name}</Text>
-                <Text style={styles.price}>Price: ${product.price}</Text>
-                <Text style={styles.stock}>Stock: {product.stock}</Text>
+                <Text style={styles.price}>Precio: ${product.price}</Text>
+                <Text style={styles.stock}>Cantidad Disponible: {product.stock}</Text>
                 {product.discount && (
-                    <Text style={styles.discount}>Discount: {product.discount}%</Text>
+                    <Text style={styles.discount}>Descuento: {product.discount}%</Text>
                 )}
                 <Text style={styles.description}>{product.description}</Text>
             </View>
